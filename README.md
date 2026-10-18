@@ -12,7 +12,7 @@ Pengelolaan bank sampah di lingkungan pemukiman (RT/RW) umumnya masih mengandalk
 2. **Risiko Kehilangan & Kerusakan Buku Fisik:** Catatan buku tabungan nasabah mudah hilang, basah, atau rusak, sehingga memicu sengketa pencatatan saldo.
 3. **Ketiadaan Transparansi Saldo Real-Time:** Nasabah tidak dapat memantau saldo aktif atau memeriksa riwayat setoran secara mandiri tanpa harus mendatangi kader bank sampah.
 4. **Alur Penarikan Dana yang Tidak Terdokumentasi:** Penarikan uang tunai sering kali tidak diimbangi dengan mutasi keluar yang tercatat seketika, membuka celah selisih kas pengurus.
-5. **Lambatnya Rekapitulasi Kas RW:** Pengurus RW membutuhkan waktu berhari-hari untuk merekapitulasi volume sampah terpilah dan total perputaran uang.
+5. **Lambatnya Rekapitulasi Kas RW:** Kader bank sampah membutuhkan waktu cukup lama untuk menghitung kas yang dapat diterima berdasarkan volume sampah terpilah.
 
 **Solusi Digital:**
 Aplikasi ini mentransformasikan alur kerja tersebut menjadi sistem digital yang aman, transparan, dan terintegrasi menggunakan transaksi database atomik (*ACID*) dan otentikasi aman berbasis token (*Laravel Sanctum*).

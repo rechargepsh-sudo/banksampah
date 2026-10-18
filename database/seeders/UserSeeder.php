@@ -14,7 +14,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Admin (1 user)
+        // 1. Akun Admin & Super Admin
+        User::firstOrCreate(
+            ['username' => 'superadmin'],
+            [
+                'name' => 'Super Administrator',
+                'email' => 'superadmin@banksampah.test',
+                'password' => Hash::make('password123'),
+                'role' => 'admin',
+                'is_active' => true,
+            ]
+        );
+
         User::firstOrCreate(
             ['username' => 'admin'],
             [
