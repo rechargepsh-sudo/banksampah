@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\ApiLoginRequest;
 use App\Models\Nasabah;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +14,7 @@ class AuthController extends Controller
     /**
      * Otentikasi login untuk Kader dan Nasabah.
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(ApiLoginRequest $request): JsonResponse
     {
         $loginInput = $request->validated('login');
         $password = $request->validated('password');

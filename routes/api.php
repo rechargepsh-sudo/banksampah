@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\NasabahController as ApiAdminNasabahController;
+use App\Http\Controllers\Api\Admin\UserController as ApiAdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaderController;
 use App\Http\Controllers\KategoriSampahController;
@@ -30,6 +32,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
         Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Endpoint Khusus Admin (CRUD User & Nasabah)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:admin')->prefix('admin')->name('api.admin.')->group(function () {
+        Route::apiResource('users', ApiAdminUserController::class);
+        Route::apiResource('nasabah', ApiAdminNasabahController::class);
     });
 
     /*

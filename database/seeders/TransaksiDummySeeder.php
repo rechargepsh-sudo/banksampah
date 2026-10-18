@@ -28,14 +28,14 @@ class TransaksiDummySeeder extends Seeder
         $nasabahEko = Nasabah::where('nik', '3201012304890006')->first();
         $nasabahMaya = Nasabah::where('nik', '3201015607940007')->first();
 
-        $kardus = KategoriSampah::where('nama_kategori', 'Kardus / Karton Box')->first();
-        $botolPET = KategoriSampah::where('nama_kategori', 'Botol Plastik Bersih (PET)')->first();
-        $gelasPP = KategoriSampah::where('nama_kategori', 'Gelas Plastik / PP')->first();
-        $logamBesi = KategoriSampah::where('nama_kategori', 'Logam Besi / Rongsok')->first();
-        $kalengAluminium = KategoriSampah::where('nama_kategori', 'Kaleng Aluminium')->first();
-        $kertasHVS = KategoriSampah::where('nama_kategori', 'Kertas Putih / HVS')->first();
-        $kertasKoran = KategoriSampah::where('nama_kategori', 'Kertas Koran / Buram')->first();
-        $minyakJelantah = KategoriSampah::where('nama_kategori', 'Minyak Jelantah')->first();
+        $kardus = KategoriSampah::where('kode', '3F')->orWhere('nama_kategori', 'like', '%Kardus%')->first();
+        $botolPET = KategoriSampah::where('kode', '2D')->orWhere('nama_kategori', 'like', '%Botol Mineral%')->first();
+        $gelasPP = KategoriSampah::where('kode', '2K')->orWhere('nama_kategori', 'like', '%Gelas%')->first();
+        $logamBesi = KategoriSampah::where('kode', '1B')->orWhere('nama_kategori', 'like', '%Besi%')->first();
+        $kalengAluminium = KategoriSampah::where('kode', '1D')->orWhere('kode', '1A')->orWhere('nama_kategori', 'like', '%Kaleng%')->first();
+        $kertasHVS = KategoriSampah::where('kode', '3I')->orWhere('nama_kategori', 'like', '%HVS%')->first();
+        $kertasKoran = KategoriSampah::where('kode', '3E')->orWhere('nama_kategori', 'like', '%Koran%')->first();
+        $minyakJelantah = KategoriSampah::where('kode', '7D')->orWhere('nama_kategori', 'like', '%Jelantah%')->first();
 
         // ==========================================
         // 1. TRANSAKSI SETOR 1 (Dewi Lestari)
