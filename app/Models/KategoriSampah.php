@@ -13,6 +13,7 @@ class KategoriSampah extends Model
     protected $table = 'kategori_sampah';
 
     protected $fillable = [
+        'kode',
         'nama_kategori',
         'harga_per_kg',
         'satuan',

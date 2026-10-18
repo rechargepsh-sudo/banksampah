@@ -16,12 +16,24 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    @if (in_array(Auth::user()?->role, ['admin', 'kader']))
+                        <x-nav-link :href="route('setor-sampah.index')" :active="request()->routeIs('setor-sampah.*')">
+                            {{ __('Setor Sampah') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('penarikan-dana.index')" :active="request()->routeIs('penarikan-dana.*')">
+                            {{ __('Penarikan Dana') }}
+                        </x-nav-link>
+                    @endif
+
                     @if (Auth::user()?->role === 'admin')
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                             {{ __('Kelola User') }}
                         </x-nav-link>
                         <x-nav-link :href="route('admin.nasabah.index')" :active="request()->routeIs('admin.nasabah.*')">
                             {{ __('Kelola Nasabah') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.kategori-sampah.index')" :active="request()->routeIs('admin.kategori-sampah.*')">
+                            {{ __('Kategori Sampah') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -80,12 +92,24 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
+            @if (in_array(Auth::user()?->role, ['admin', 'kader']))
+                <x-responsive-nav-link :href="route('setor-sampah.index')" :active="request()->routeIs('setor-sampah.*')">
+                    {{ __('Setor Sampah') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('penarikan-dana.index')" :active="request()->routeIs('penarikan-dana.*')">
+                    {{ __('Penarikan Dana') }}
+                </x-responsive-nav-link>
+            @endif
+
             @if (Auth::user()?->role === 'admin')
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                     {{ __('Kelola User') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.nasabah.index')" :active="request()->routeIs('admin.nasabah.*')">
                     {{ __('Kelola Nasabah') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.kategori-sampah.index')" :active="request()->routeIs('admin.kategori-sampah.*')">
+                    {{ __('Kategori Sampah') }}
                 </x-responsive-nav-link>
             @endif
         </div>

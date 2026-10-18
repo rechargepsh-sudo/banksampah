@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Nasabah;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -15,9 +16,23 @@ class AuthenticationTest extends TestCase
         $response = $this->get('/login');
 
         $response->assertStatus(200);
+        $response->assertSeeText('Username / Email / NIK');
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    public function test_users_can_authenticate_using_email(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', [
+            'login' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_users_can_authenticate_using_legacy_email_field(): void
     {
         $user = User::factory()->create();
 
@@ -30,12 +45,65 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 
+    public function test_users_can_authenticate_using_username(): void
+    {
+        $user = User::factory()->create([
+            'username' => 'kader_pos1',
+            'password' => 'password123',
+        ]);
+
+        $response = $this->post('/login', [
+            'login' => 'kader_pos1',
+            'password' => 'password123',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_nasabah_can_authenticate_using_16_digit_nik(): void
+    {
+        $user = User::factory()->nasabah()->create([
+            'password' => 'password123',
+        ]);
+
+        Nasabah::factory()->create([
+            'user_id' => $user->id,
+            'nik' => '3201015502900001',
+        ]);
+
+        $response = $this->post('/login', [
+            'login' => '3201015502900001',
+            'password' => 'password123',
+        ]);
+
+        $this->assertAuthenticated();
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_inactive_user_cannot_authenticate(): void
+    {
+        $user = User::factory()->create([
+            'is_active' => false,
+            'password' => 'password123',
+        ]);
+
+        $response = $this->post('/login', [
+            'login' => $user->username,
+            'password' => 'password123',
+        ]);
+
+        $this->assertGuest();
+        $response->assertSessionHasErrors('login');
+    }
+
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
 
         $this->post('/login', [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'wrong-password',
         ]);
 

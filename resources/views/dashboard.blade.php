@@ -5,8 +5,21 @@
         </h2>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8" x-data="{ modalTarik: false, isSubmitting: false }" x-on:keydown.escape.window="modalTarik = false">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            {{-- Flash Messages --}}
+            @if (session('success'))
+                <div class="p-4 bg-green-100 border border-green-300 text-green-800 rounded-md text-sm">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="p-4 bg-red-100 border border-red-300 text-red-800 rounded-md text-sm">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             {{-- Greeting --}}
             <div class="bg-white shadow-sm sm:rounded-lg p-6 flex items-center gap-4">
@@ -50,11 +63,12 @@
                     </div>
 
                     {{-- Penarikan Pending --}}
-                    <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-rose-500">
+                    <a href="{{ route('penarikan-dana.index', ['status' => 'pending']) }}"
+                       class="block bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-rose-500 hover:bg-rose-50/40 transition">
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Penarikan Pending</p>
                         <p class="mt-1 text-3xl font-bold text-gray-800">{{ $penarikanPending }}</p>
-                        <p class="mt-1 text-xs text-gray-400">Menunggu persetujuan</p>
-                    </div>
+                        <p class="mt-1 text-xs text-rose-600 font-medium">Buka antrean validasi →</p>
+                    </a>
                 </div>
 
                 {{-- Ringkasan Keseluruhan --}}
@@ -66,17 +80,29 @@
                     </div>
                     <div class="bg-white shadow-sm sm:rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
-                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kelola Master Data</p>
-                            <p class="mt-1 text-sm text-gray-600">Manajemen akun pengguna dan data nasabah</p>
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kelola Master Data & Kas</p>
+                            <p class="mt-1 text-sm text-gray-600">Manajemen akun, data nasabah, dan penarikan</p>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <a href="{{ route('setor-sampah.create') }}"
+                               class="inline-flex items-center px-3 py-2 bg-emerald-600 text-white text-xs font-medium rounded-md hover:bg-emerald-700 transition">
+                                + Setor Sampah
+                            </a>
+                            <a href="{{ route('penarikan-dana.index') }}"
+                               class="inline-flex items-center px-3 py-2 bg-rose-600 text-white text-xs font-medium rounded-md hover:bg-rose-700 transition">
+                                Penarikan Dana
+                            </a>
                             <a href="{{ route('admin.users.index') }}"
                                class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white text-xs font-medium rounded-md hover:bg-indigo-700 transition">
                                 Kelola User
                             </a>
                             <a href="{{ route('admin.nasabah.index') }}"
-                               class="inline-flex items-center px-3 py-2 bg-emerald-600 text-white text-xs font-medium rounded-md hover:bg-emerald-700 transition">
+                               class="inline-flex items-center px-3 py-2 bg-teal-600 text-white text-xs font-medium rounded-md hover:bg-teal-700 transition">
                                 Kelola Nasabah
+                            </a>
+                            <a href="{{ route('admin.kategori-sampah.index') }}"
+                               class="inline-flex items-center px-3 py-2 bg-amber-600 text-white text-xs font-medium rounded-md hover:bg-amber-700 transition">
+                                ♻️ Kategori Sampah
                             </a>
                         </div>
                     </div>
@@ -140,17 +166,31 @@
                         <p class="mt-1 text-xs text-gray-400">Rp {{ number_format($nominalBulanIni, 0, ',', '.') }}</p>
                     </div>
 
-                    <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-rose-500">
+                    <a href="{{ route('penarikan-dana.index', ['status' => 'pending']) }}"
+                       class="block bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-rose-500 hover:bg-rose-50/40 transition">
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Penarikan Pending</p>
                         <p class="mt-1 text-3xl font-bold text-gray-800">{{ $penarikanPending }}</p>
-                        <p class="mt-1 text-xs text-gray-400">nasabah binaan</p>
-                    </div>
+                        <p class="mt-1 text-xs text-rose-600 font-medium">Validasi antrean →</p>
+                    </a>
                 </div>
 
                 {{-- Setoran Terbaru --}}
                 <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-200">
-                        <h3 class="text-sm font-semibold text-gray-700">5 Setoran Terbaru (Dicatat Anda)</h3>
+                    <div class="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-800">5 Setoran Terbaru (Dicatat Anda)</h3>
+                            <p class="text-xs text-gray-500">Daftar transaksi penimbangan sampah terakhir</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('setor-sampah.create') }}"
+                               class="inline-flex items-center px-3 py-1.5 bg-emerald-600 text-white text-xs font-semibold rounded-md hover:bg-emerald-500 shadow-sm transition">
+                                + Timbang / Catat Setoran
+                            </a>
+                            <a href="{{ route('setor-sampah.index') }}"
+                               class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-md hover:bg-gray-200 transition">
+                                Semua Riwayat
+                            </a>
+                        </div>
                     </div>
                     @if ($setoranTerbaru->isNotEmpty())
                         <table class="min-w-full divide-y divide-gray-200 text-sm">
@@ -191,10 +231,19 @@
                 @else
                     {{-- Stat Cards --}}
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-emerald-500">
-                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Saldo Aktif</p>
-                            <p class="mt-1 text-3xl font-bold text-gray-800">Rp {{ number_format($saldoAktif, 0, ',', '.') }}</p>
-                            <p class="mt-1 text-xs text-gray-400">saldo dapat ditarik</p>
+                        <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-emerald-500 flex flex-col justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Saldo Aktif</p>
+                                <p class="mt-1 text-3xl font-bold text-gray-800 font-mono">Rp {{ number_format($saldoAktif, 0, ',', '.') }}</p>
+                                <p class="mt-1 text-xs text-gray-400">saldo siap dicairkan</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-gray-100">
+                                <button type="button" @click="modalTarik = true"
+                                        @if ($saldoAktif <= 0) disabled @endif
+                                        class="w-full inline-flex justify-center items-center px-4 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-md hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed transition">
+                                    Ajukan Tarik Dana
+                                </button>
+                            </div>
                         </div>
 
                         <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-indigo-500">
@@ -292,5 +341,95 @@
             @endif
 
         </div>
+
+        {{-- Modal Pengajuan Tarik Dana --}}
+        @if ($user->role === 'nasabah' && !empty($nasabah))
+            <div x-show="modalTarik"
+                 x-cloak
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+                 @click.self="modalTarik = false">
+                <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4 relative"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 scale-100"
+                     x-transition:leave-end="opacity-0 scale-95"
+                     @click.away="modalTarik = false">
+                    <div class="flex items-center justify-between border-b pb-3">
+                        <h3 class="text-base font-bold text-gray-900">Ajukan Penarikan Dana</h3>
+                        <button type="button"
+                                @click="modalTarik = false"
+                                class="text-gray-400 hover:text-gray-600 rounded-lg p-1 hover:bg-gray-100 transition text-lg font-bold leading-none"
+                                title="Tutup (Esc)">
+                            &times;
+                        </button>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-lg text-xs flex justify-between items-center">
+                        <div>
+                            <span class="text-gray-600">Saldo Aktif Saat Ini:</span>
+                            <div class="text-lg font-bold text-emerald-800 font-mono">Rp {{ number_format($saldoAktif, 0, ',', '.') }}</div>
+                        </div>
+                        <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded font-semibold text-xs">Siap Ditarik</span>
+                    </div>
+
+                    <form action="{{ route('penarikan-dana.ajukan') }}"
+                          method="POST"
+                          class="space-y-4"
+                          @submit="modalTarik = false; isSubmitting = true">
+                        @csrf
+                        <div>
+                            <x-input-label for="jumlah_penarikan" :value="__('Nominal Penarikan (Rp)')" />
+                            <x-text-input id="jumlah_penarikan" name="jumlah_penarikan" type="number" step="500" min="1000" max="{{ $saldoAktif }}"
+                                          class="mt-1 block w-full text-sm font-mono" placeholder="Minimal Rp 1.000" required />
+                            <p class="text-xs text-gray-400 mt-1">Maksimal penarikan: Rp {{ number_format($saldoAktif, 0, ',', '.') }}</p>
+                        </div>
+
+                        <div>
+                            <x-input-label for="metode_penarikan" :value="__('Metode Pengambilan Dana')" />
+                            <select id="metode_penarikan" name="metode_penarikan" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
+                                <option value="tunai">Ambil Tunai di Pos Bank Sampah RW</option>
+                                <option value="transfer">Transfer Bank / E-Wallet</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <x-input-label for="catatan" :value="__('Keterangan / No. Rekening (Opsional)')" />
+                            <textarea id="catatan" name="catatan" rows="2"
+                                      placeholder="Nama bank, nomor rekening/e-wallet, atau waktu pengambilan"
+                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-xs"></textarea>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-3 pt-3 border-t">
+                            <button type="button"
+                                    @click="modalTarik = false"
+                                    class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-md hover:bg-gray-200 transition">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                    :disabled="isSubmitting"
+                                    class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-50">
+                                <span x-show="!isSubmitting">Kirim Permohonan</span>
+                                <span x-show="isSubmitting" class="flex items-center gap-1">
+                                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                    </svg>
+                                    Mengirim...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endif
     </div>
 </x-app-layout>

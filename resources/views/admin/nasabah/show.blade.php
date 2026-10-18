@@ -34,10 +34,16 @@
                 <div class="bg-white shadow-sm sm:rounded-lg p-6 md:col-span-2">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-base font-semibold text-gray-800">Akun Login Nasabah</h3>
-                        <a href="{{ route('admin.nasabah.edit', $nasabah) }}"
-                           class="inline-flex items-center px-3 py-1.5 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 transition ease-in-out duration-150">
-                            Edit Nasabah
-                        </a>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('setor-sampah.create', ['nasabah_id' => $nasabah->id]) }}"
+                               class="inline-flex items-center px-3 py-1.5 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 transition ease-in-out duration-150">
+                                + Timbang / Setor
+                            </a>
+                            <a href="{{ route('admin.nasabah.edit', $nasabah) }}"
+                               class="inline-flex items-center px-3 py-1.5 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 transition ease-in-out duration-150">
+                                Edit Nasabah
+                            </a>
+                        </div>
                     </div>
                     @if ($nasabah->user)
                         <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
