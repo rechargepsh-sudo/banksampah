@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\UpdateNasabahRequest;
 use App\Http\Requests\Kader\RegisterNasabahRequest;
 use App\Models\Nasabah;
 use App\Models\User;
@@ -41,8 +42,19 @@ class KaderController extends Controller
             ? $validated['password']
             : substr($validated['nik'], -6); // Default 6 digit terakhir NIK
 
-        // 3. Simpan akun user dan profil nasabah dalam database transaction
-        $result = DB::transaction(function () use ($validated, $username, $plainPassword, $kader) {
+        // 3. Tentukan tanggal bergabung
+        $tanggalBergabung = ! empty($validated['tanggal_bergabung'])
+            ? $validated['tanggal_bergabung']
+            : now()->toDateString();
+
+        // 4. Sesuaikan kader pembina berdasarkan RW nasabah jika tersedia
+        $kaderRw = User::where('role', 'kader')
+            ->where('nomor_rw', $validated['nomor_rw'])
+            ->first();
+        $pembina = $kaderRw ?? $kader;
+
+        // 5. Simpan akun user dan profil nasabah dalam database transaction
+        $result = DB::transaction(function () use ($validated, $username, $plainPassword, $pembina, $tanggalBergabung) {
             $user = User::create([
                 'name' => $validated['nama'],
                 'username' => $username,
@@ -60,8 +72,9 @@ class KaderController extends Controller
                 'nomor_rw' => $validated['nomor_rw'],
                 'nomor_rt' => $validated['nomor_rt'] ?? null,
                 'alamat' => $validated['alamat'] ?? null,
+                'tanggal_bergabung' => $tanggalBergabung,
                 'saldo_aktif' => 0.00,
-                'created_by' => $kader->id,
+                'created_by' => $pembina->id,
             ]);
 
             return [
@@ -141,6 +154,68 @@ class KaderController extends Controller
         return response()->json([
             'success' => true,
             'data' => $nasabah,
+        ], 200);
+    }
+
+    /**
+     * Memperbarui data profil nasabah dan akun login user terkait oleh Kader.
+     */
+    public function updateNasabah(UpdateNasabahRequest $request, int $id): JsonResponse
+    {
+        $nasabah = Nasabah::findOrFail($id);
+        $validated = $request->validated();
+
+        DB::transaction(function () use ($validated, $nasabah, $request) {
+            $nasabah->update([
+                'nik' => $validated['nik'],
+                'nama' => $validated['nama'],
+                'no_hp' => $validated['no_hp'],
+                'nomor_rw' => $validated['nomor_rw'],
+                'nomor_rt' => $validated['nomor_rt'] ?? null,
+                'alamat' => $validated['alamat'] ?? null,
+            ]);
+
+            if ($nasabah->user) {
+                $userUpdate = [
+                    'name' => $validated['nama'],
+                    'username' => ! empty($validated['username']) ? $validated['username'] : $nasabah->user->username,
+                    'email' => $validated['email'] ?? null,
+                    'is_active' => $request->boolean('is_active', true),
+                ];
+
+                if (! empty($validated['password'])) {
+                    $userUpdate['password'] = Hash::make($validated['password']);
+                }
+
+                $nasabah->user->update($userUpdate);
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data nasabah berhasil diperbarui.',
+            'data' => $nasabah->fresh()->load(['user', 'kaderPendaftar']),
+        ], 200);
+    }
+
+    /**
+     * Menghapus nasabah dan akun login user terkait oleh Kader.
+     */
+    public function deleteNasabah(int $id): JsonResponse
+    {
+        $nasabah = Nasabah::findOrFail($id);
+
+        DB::transaction(function () use ($nasabah) {
+            if ($nasabah->user) {
+                $nasabah->user->delete();
+            } else {
+                $nasabah->delete();
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Nasabah berhasil dihapus.',
         ], 200);
     }
 }

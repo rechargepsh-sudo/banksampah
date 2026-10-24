@@ -41,9 +41,12 @@ class UpdateNasabahRequest extends FormRequest
             ],
             'nama' => ['required', 'string', 'max:100'],
             'no_hp' => ['required', 'string', 'max:15'],
+            'kecamatan' => ['nullable', 'string', 'max:60'],
+            'kelurahan' => ['nullable', 'string', 'max:60'],
             'nomor_rw' => ['required', 'string', 'max:5'],
             'nomor_rt' => ['nullable', 'string', 'max:5'],
             'alamat' => ['nullable', 'string'],
+            'tanggal_bergabung' => ['nullable', 'date'],
             'kader_id' => ['nullable', 'exists:users,id'],
             'username' => [
                 'nullable',

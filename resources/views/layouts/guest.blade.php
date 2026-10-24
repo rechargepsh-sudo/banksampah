@@ -18,15 +18,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center py-8 px-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-100">
             <div class="mb-2">
                 <a href="/" class="flex items-center gap-2 group">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-200 group-hover:scale-105 transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                    </span>
-                    <div class="text-left">
-                        <span class="block text-lg font-bold text-gray-900 leading-tight">Bank Sampah</span>
-                        <span class="block text-xs font-semibold text-emerald-600 tracking-wider uppercase">Sistem Digital RW</span>
-                    </div>
+                    <x-application-logo class="h-16 w-auto object-contain drop-shadow-sm group-hover:scale-105 transition" />
                 </a>
             </div>
 

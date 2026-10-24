@@ -49,11 +49,13 @@ Route::middleware('auth:sanctum')->group(function () {
     | Endpoint Khusus Kader & Admin
     |--------------------------------------------------------------------------
     */
-    Route::middleware('role:kader,admin')->prefix('kader')->name('kader.')->group(function () {
+    Route::middleware('role:kader,admin')->prefix('kader')->name('api.kader.')->group(function () {
         // 1. Pendaftaran & Manajemen Nasabah
         Route::post('/nasabah', [KaderController::class, 'registerNasabah'])->name('nasabah.register');
         Route::get('/nasabah', [KaderController::class, 'listNasabah'])->name('nasabah.index');
         Route::get('/nasabah/{id}', [KaderController::class, 'showNasabah'])->name('nasabah.show');
+        Route::put('/nasabah/{id}', [KaderController::class, 'updateNasabah'])->name('nasabah.update');
+        Route::delete('/nasabah/{id}', [KaderController::class, 'deleteNasabah'])->name('nasabah.destroy');
 
         // 2. Input & Manajemen Transaksi Setoran Sampah
         Route::post('/setor', [TransaksiSetorController::class, 'store'])->name('setor.store');

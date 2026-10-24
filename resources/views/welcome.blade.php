@@ -17,15 +17,9 @@
     <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                </div>
-                <div>
-                    <span class="block text-lg font-extrabold text-gray-900 leading-tight">Bank Sampah</span>
-                    <span class="block text-[11px] font-semibold text-emerald-600 uppercase tracking-wider">Digital RW / RT</span>
-                </div>
+                <a href="/" class="flex items-center gap-3">
+                    <x-application-logo class="h-11 w-auto object-contain" />
+                </a>
             </div>
 
             <div class="flex items-center gap-3">

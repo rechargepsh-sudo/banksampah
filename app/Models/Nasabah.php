@@ -18,9 +18,12 @@ class Nasabah extends Model
         'nik',
         'nama',
         'no_hp',
+        'kecamatan',
+        'kelurahan',
         'nomor_rw',
         'nomor_rt',
         'alamat',
+        'tanggal_bergabung',
         'saldo_aktif',
         'created_by',
     ];
@@ -29,7 +32,15 @@ class Nasabah extends Model
     {
         return [
             'saldo_aktif' => 'decimal:2',
+            'tanggal_bergabung' => 'date',
         ];
+    }
+
+    public function getTanggalBergabungDisplayAttribute(): string
+    {
+        return $this->tanggal_bergabung
+            ? $this->tanggal_bergabung->translatedFormat('d M Y')
+            : ($this->created_at ? $this->created_at->translatedFormat('d M Y') : '-');
     }
 
     public function user(): BelongsTo

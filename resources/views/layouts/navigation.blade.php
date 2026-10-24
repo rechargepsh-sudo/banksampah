@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-10 w-auto" />
                     </a>
                 </div>
 
@@ -16,21 +16,42 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @if (in_array(Auth::user()?->role, ['admin', 'kader']))
+                    {{-- Navigasi khusus KADER --}}
+                    @if (Auth::user()?->role === 'kader')
                         <x-nav-link :href="route('setor-sampah.index')" :active="request()->routeIs('setor-sampah.*')">
                             {{ __('Setor Sampah') }}
                         </x-nav-link>
                         <x-nav-link :href="route('penarikan-dana.index')" :active="request()->routeIs('penarikan-dana.*')">
                             {{ __('Penarikan Dana') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('kader.nasabah.index')" :active="request()->routeIs('kader.nasabah.*')">
+                            {{ __('Data Nasabah') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('katalog-sampah.index')" :active="request()->routeIs('katalog-sampah.*')">
+                            {{ __('Kategori Sampah') }}
+                        </x-nav-link>
                     @endif
 
+                    {{-- Navigasi khusus NASABAH --}}
+                    @if (Auth::user()?->role === 'nasabah')
+                        <x-nav-link :href="route('nasabah.warga.index')" :active="request()->routeIs('nasabah.warga.*')">
+                            {{ __('Data Nasabah') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('katalog-sampah.index')" :active="request()->routeIs('katalog-sampah.*')">
+                            {{ __('Kategori Sampah') }}
+                        </x-nav-link>
+                    @endif
+
+                    {{-- Navigasi khusus ADMIN (Fitur Data Nasabah Dihapus) --}}
                     @if (Auth::user()?->role === 'admin')
+                        <x-nav-link :href="route('setor-sampah.index')" :active="request()->routeIs('setor-sampah.*')">
+                            {{ __('Setor Sampah') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('penarikan-dana.index')" :active="request()->routeIs('penarikan-dana.*')">
+                            {{ __('Penarikan Dana') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                             {{ __('Kelola User') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.nasabah.index')" :active="request()->routeIs('admin.nasabah.*')">
-                            {{ __('Kelola Nasabah') }}
                         </x-nav-link>
                         <x-nav-link :href="route('admin.kategori-sampah.index')" :active="request()->routeIs('admin.kategori-sampah.*')">
                             {{ __('Kategori Sampah') }}
@@ -92,21 +113,42 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            @if (in_array(Auth::user()?->role, ['admin', 'kader']))
+            {{-- Menu khusus KADER --}}
+            @if (Auth::user()?->role === 'kader')
                 <x-responsive-nav-link :href="route('setor-sampah.index')" :active="request()->routeIs('setor-sampah.*')">
                     {{ __('Setor Sampah') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('penarikan-dana.index')" :active="request()->routeIs('penarikan-dana.*')">
                     {{ __('Penarikan Dana') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('kader.nasabah.index')" :active="request()->routeIs('kader.nasabah.*')">
+                    {{ __('Data Nasabah') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('katalog-sampah.index')" :active="request()->routeIs('katalog-sampah.*')">
+                    {{ __('Kategori Sampah') }}
+                </x-responsive-nav-link>
             @endif
 
+            {{-- Menu khusus NASABAH --}}
+            @if (Auth::user()?->role === 'nasabah')
+                <x-responsive-nav-link :href="route('nasabah.warga.index')" :active="request()->routeIs('nasabah.warga.*')">
+                    {{ __('Data Nasabah') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('katalog-sampah.index')" :active="request()->routeIs('katalog-sampah.*')">
+                    {{ __('Kategori Sampah') }}
+                </x-responsive-nav-link>
+            @endif
+
+            {{-- Menu khusus ADMIN (Fitur Data Nasabah Dihapus) --}}
             @if (Auth::user()?->role === 'admin')
+                <x-responsive-nav-link :href="route('setor-sampah.index')" :active="request()->routeIs('setor-sampah.*')">
+                    {{ __('Setor Sampah') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('penarikan-dana.index')" :active="request()->routeIs('penarikan-dana.*')">
+                    {{ __('Penarikan Dana') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                     {{ __('Kelola User') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.nasabah.index')" :active="request()->routeIs('admin.nasabah.*')">
-                    {{ __('Kelola Nasabah') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.kategori-sampah.index')" :active="request()->routeIs('admin.kategori-sampah.*')">
                     {{ __('Kategori Sampah') }}

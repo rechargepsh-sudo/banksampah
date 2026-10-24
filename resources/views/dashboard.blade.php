@@ -96,10 +96,6 @@
                                class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white text-xs font-medium rounded-md hover:bg-indigo-700 transition">
                                 Kelola User
                             </a>
-                            <a href="{{ route('admin.nasabah.index') }}"
-                               class="inline-flex items-center px-3 py-2 bg-teal-600 text-white text-xs font-medium rounded-md hover:bg-teal-700 transition">
-                                Kelola Nasabah
-                            </a>
                             <a href="{{ route('admin.kategori-sampah.index') }}"
                                class="inline-flex items-center px-3 py-2 bg-amber-600 text-white text-xs font-medium rounded-md hover:bg-amber-700 transition">
                                 ♻️ Kategori Sampah
@@ -148,11 +144,12 @@
 
                 {{-- Stat Cards --}}
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-emerald-500">
+                    <a href="{{ route('kader.nasabah.index') }}"
+                       class="block bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-emerald-500 hover:bg-emerald-50/40 transition">
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nasabah Dibina</p>
                         <p class="mt-1 text-3xl font-bold text-gray-800">{{ $totalNasabahDibina }}</p>
-                        <p class="mt-1 text-xs text-gray-400">nasabah terdaftar</p>
-                    </div>
+                        <p class="mt-1 text-xs text-emerald-600 font-medium">Kelola nasabah →</p>
+                    </a>
 
                     <div class="bg-white shadow-sm sm:rounded-lg p-5 border-l-4 border-indigo-500">
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Setoran</p>
@@ -172,6 +169,39 @@
                         <p class="mt-1 text-3xl font-bold text-gray-800">{{ $penarikanPending }}</p>
                         <p class="mt-1 text-xs text-rose-600 font-medium">Validasi antrean →</p>
                     </a>
+                </div>
+
+                {{-- Action Bar Kader --}}
+                <div class="bg-white shadow-sm sm:rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Aksi Cepat Kader</p>
+                        <p class="mt-1 text-sm text-gray-600">Catat penimbangan sampah warga atau daftarkan nasabah baru</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a href="{{ route('kader.nasabah.create') }}"
+                           class="inline-flex items-center px-3 py-2 bg-teal-600 text-white text-xs font-medium rounded-md hover:bg-teal-700 transition">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                            + Tambah Nasabah
+                        </a>
+                        <a href="{{ route('kader.nasabah.index') }}"
+                           class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-md hover:bg-gray-200 transition">
+                            Daftar Nasabah
+                        </a>
+                        <a href="{{ route('setor-sampah.create') }}"
+                           class="inline-flex items-center px-3 py-2 bg-emerald-600 text-white text-xs font-medium rounded-md hover:bg-emerald-700 transition">
+                            + Timbang Sampah
+                        </a>
+                        <a href="{{ route('penarikan-dana.index') }}"
+                           class="inline-flex items-center px-3 py-2 bg-rose-600 text-white text-xs font-medium rounded-md hover:bg-rose-700 transition">
+                            Validasi Penarikan
+                        </a>
+                        <a href="{{ route('katalog-sampah.index') }}"
+                           class="inline-flex items-center px-3 py-2 bg-amber-500 text-white text-xs font-medium rounded-md hover:bg-amber-600 transition">
+                            ♻️ Kategori Sampah
+                        </a>
+                    </div>
                 </div>
 
                 {{-- Setoran Terbaru --}}
@@ -256,7 +286,26 @@
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Info Rekening</p>
                             <p class="mt-1 text-sm font-semibold text-gray-800">{{ $nasabah->nama }}</p>
                             <p class="text-xs text-gray-400">NIK: {{ $nasabah->nik }}</p>
-                            <p class="text-xs text-gray-400">RT {{ $nasabah->nomor_rt }} / RW {{ $nasabah->nomor_rw }}</p>
+                            <p class="text-xs text-gray-500">RT {{ $nasabah->nomor_rt ?? '-' }} / RW {{ $nasabah->nomor_rw }}</p>
+                            <p class="mt-1 text-xs text-emerald-700 font-medium">📅 Bergabung: {{ $nasabah->tanggal_bergabung_display }}</p>
+                        </div>
+                    </div>
+
+                    {{-- Action Bar Nasabah --}}
+                    <div class="bg-white shadow-sm sm:rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Layanan Mandiri Warga</p>
+                            <p class="mt-1 text-sm text-gray-600">Cek daftar sesama warga nasabah atau patokan harga terkini kategori sampah.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <a href="{{ route('nasabah.warga.index') }}"
+                               class="inline-flex items-center px-3 py-2 bg-teal-600 text-white text-xs font-medium rounded-md hover:bg-teal-700 transition shadow-sm">
+                                👥 Data Nasabah
+                            </a>
+                            <a href="{{ route('katalog-sampah.index') }}"
+                               class="inline-flex items-center px-3 py-2 bg-emerald-600 text-white text-xs font-medium rounded-md hover:bg-emerald-700 transition shadow-sm">
+                                ♻️ Kategori Sampah
+                            </a>
                         </div>
                     </div>
 

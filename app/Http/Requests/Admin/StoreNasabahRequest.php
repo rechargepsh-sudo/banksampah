@@ -26,6 +26,8 @@ class StoreNasabahRequest extends FormRequest
             'nik' => ['required', 'string', 'digits:16', 'unique:nasabah,nik'],
             'nama' => ['required', 'string', 'max:100'],
             'no_hp' => ['required', 'string', 'max:15'],
+            'kecamatan' => ['nullable', 'string', 'max:60'],
+            'kelurahan' => ['nullable', 'string', 'max:60'],
             'nomor_rw' => ['required', 'string', 'max:5'],
             'nomor_rt' => ['nullable', 'string', 'max:5'],
             'alamat' => ['nullable', 'string'],

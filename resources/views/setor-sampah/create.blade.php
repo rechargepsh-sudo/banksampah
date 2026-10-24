@@ -35,7 +35,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-gray-200">
                             {{-- Pilih Nasabah --}}
                             <div>
-                                <x-input-label for="nasabah_id" :value="__('Pilih Nasabah Warga')" />
+                                <div class="flex items-center justify-between">
+                                    <x-input-label for="nasabah_id" :value="__('Pilih Nasabah Warga')" />
+                                    <a href="{{ route('kader.nasabah.create') }}" target="_blank"
+                                       class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">
+                                        + Daftarkan Nasabah Baru
+                                    </a>
+                                </div>
                                 <select id="nasabah_id" name="nasabah_id" required
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                                     <option value="">-- Pilih Nasabah Pemilik Tabungan --</option>

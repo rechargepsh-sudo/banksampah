@@ -67,7 +67,7 @@ class CreateSuperAdminCommandTest extends TestCase
         $dashboardResponse = $this->get(route('dashboard'));
         $dashboardResponse->assertOk()
             ->assertSeeText('Kelola User')
-            ->assertSeeText('Kelola Nasabah');
+            ->assertSeeText('Kategori Sampah');
     }
 
     public function test_super_admin_can_login_via_api(): void
